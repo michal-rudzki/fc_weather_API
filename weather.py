@@ -10,14 +10,13 @@ def main():
         print(f"Podaj date w formacie YYYY-mm-dd, np. {date.today()}")
         user_input = input()
         if not user_input:
-            user_input = date.today()
-            print(f"Przyjmuje date: {user_input.replace(day = user_input.day + 1)}")
+            user_input = date.isoformat(date.today())
+            print(user_input)
+        elif user_input in ['q', 'quit']:
             break
         
         weather = Weather(user_input)
         weather.will_it_rain()
         
-        
-
 if __name__ == "__main__":
     main()
