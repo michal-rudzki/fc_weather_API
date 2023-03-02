@@ -3,6 +3,7 @@ import json
 import requests
 from datetime import date
 from my_globals import LATITUDE, LONGITUDE, TIMEZONE, CACHE_FILE
+
 class Weather:
     def __init__(self, user_date):
         self.start_date = user_date
