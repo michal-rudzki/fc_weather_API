@@ -58,7 +58,7 @@ class Weather:
             with open(CACHE_FILE, mode = 'r') as f:
                 cache_file_content = f.read()
             return cache_file_content
-        
+
     def will_it_rain(self):
         weather = self.get_weather()
         if weather['daily']['rain_sum'][0] == 0.0:
