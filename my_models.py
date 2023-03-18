@@ -8,6 +8,20 @@ class Weather:
         self.start_date = user_date
         #self.end_date = str(date.fromisoformat(user_date).replace(day = date.fromisoformat(user_date).day + 1))
         self.end_date = user_date
+        self.cache = {}
+    
+    def __setitems__(self, key, val):
+        pass 
+    
+    def __getitems__(self, item):
+        self.cache = self.read_data_from_cache()
+        return json.loads(self.cache)[item]
+    
+    def __iter__(self):
+        pass
+    
+    def items():
+        pass
     
     def get_weather(self):
         api_call = "https://api.open-meteo.com/v1/forecast?latitude=" + LATITUDE + "&longitude=" + LONGITUDE + "&hourly=rain&daily=rain_sum&timezone=" + TIMEZONE + "&start_date=" + self.start_date + "&end_date=" + self.end_date
@@ -17,8 +31,10 @@ class Weather:
                 self.save_date_to_cache(req.json())
                 return req.json()
             elif self.check_data_from_cache() == True:
-                cache_data = self.read_data_from_cache()
-                return json.loads(cache_data)[self.start_date]
+                #cache_data = self.read_data_from_cache()
+                cache_data = self.__getitems__(self.start_date)
+                #return json.loads(cache_data)[self.start_date]
+                return cache_data
             else:
                 self.save_date_to_cache(req.json())
                 return req.json()
