@@ -11,7 +11,10 @@ class Weather:
         self.cache = {}
     
     def __setitems__(self, key, val):
-        pass 
+        with open(CACHE_FILE, mode = 'w') as f:
+            file_content = json.loads(file_content)
+            file_content.update({key: val})
+            f.write(json.dumps(file_content, indent = 4))
     
     def __getitems__(self, item):
         self.cache = self.read_data_from_cache()
@@ -54,10 +57,7 @@ class Weather:
                     file_content.update({self.start_date: weather_req})
                     f.write(json.dumps(file_content, indent = 4))
             elif self.check_data_from_cache() != True:
-                with open(CACHE_FILE, mode = 'w') as f:
-                    file_content = json.loads(file_content)
-                    file_content.update({self.start_date: weather_req})
-                    f.write(json.dumps(file_content, indent = 4))
+                self.__setitems__(self.start_date, weather_req)
         else:
             with open(CACHE_FILE, mode = 'w') as f:
                 requests_content = {self.start_date: weather_req}
