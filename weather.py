@@ -17,6 +17,10 @@ def main():
         
         weather = Weather(user_input)
         weather.will_it_rain()
+        print(weather.items())
+        for d in weather:
+            print(d)
+        
         
 if __name__ == "__main__":
     main()
