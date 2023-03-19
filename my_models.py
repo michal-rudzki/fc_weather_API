@@ -4,6 +4,7 @@ import requests
 from datetime import date
 from my_globals import LATITUDE, LONGITUDE, TIMEZONE, CACHE_FILE
 class Weather:
+    
     def __init__(self, user_date):
         self.start_date = user_date
         #self.end_date = str(date.fromisoformat(user_date).replace(day = date.fromisoformat(user_date).day + 1))
@@ -11,8 +12,8 @@ class Weather:
         self.cache = {}
     
     def __setitems__(self, key, val):
+        file_content = json.loads(self.read_data_from_cache())
         with open(CACHE_FILE, mode = 'w') as f:
-            file_content = json.loads(file_content)
             file_content.update({key: val})
             f.write(json.dumps(file_content, indent = 4))
     
@@ -21,10 +22,16 @@ class Weather:
         return json.loads(self.cache)[item]
     
     def __iter__(self):
-        pass
+        dates_from_file = json.loads(self.read_data_from_cache())
+        for date in dates_from_file.keys():
+            yield date
     
-    def items():
-        pass
+    def items(self):
+        item = []
+        cache_from_file = self.read_data_from_cache()
+        for key, val in json.loads(cache_from_file).items():
+            item.append([key, val['daily']['rain_sum'][0]])
+        return tuple(item)
     
     def get_weather(self):
         api_call = "https://api.open-meteo.com/v1/forecast?latitude=" + LATITUDE + "&longitude=" + LONGITUDE + "&hourly=rain&daily=rain_sum&timezone=" + TIMEZONE + "&start_date=" + self.start_date + "&end_date=" + self.end_date
